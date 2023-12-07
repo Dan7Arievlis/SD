@@ -1,13 +1,13 @@
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Message {
-    private final String message;
+    private final Decision message;
     private int timeToLive;
     private Node sender;
     private static AtomicLong lastSerialNumber = new AtomicLong(0);
     private long serialNumber;
 
-    public Message(String message, int timeToLive, Node sender) {
+    public Message(Decision message, int timeToLive, Node sender) {
         long value = lastSerialNumber.incrementAndGet();
         this.serialNumber = value;
 
@@ -23,7 +23,14 @@ public class Message {
         this.serialNumber = message.serialNumber;
     }
 
-    public String getMessage() {
+    public Message(Message message, Decision newDecision) {
+        this.sender = message.sender;
+        this.message = newDecision;
+        this.timeToLive = message.timeToLive;
+        this.serialNumber = message.serialNumber;
+    }
+
+    public Decision getMessage() {
         return message;
     }
 
@@ -44,6 +51,14 @@ public class Message {
     }
 
     public long getSerialNumber() {
-      return serialNumber;
+        return serialNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Message [message=" + message + ", timeToLive=" + timeToLive + ", sender=" + sender + ", serialNumber="
+                + serialNumber + "]";
+    }
+    
+    
 }
